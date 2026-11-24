@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>통PDF (TongPDF) · 한글·PPT·한쇼·이미지 PDF 올인원 변환기</title>
+  <meta name="description" content="설치 없이 브라우저에서 한글(.hwpx/.hwp), PPT(.pptx), 워드(.docx), 이미지를 PDF로 변환하고 PDF 합치기·나누기를 처리합니다. 교무실 Windows PC용 무설치 완벽 변환기(.exe)도 함께 제공합니다.">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="./icon.svg" alt="통PDF 아이콘">
+        <div>
+          <h1>통PDF (TongPDF)</h1>
+          <p>디지털 교무수첩 연동 · 한글·PPT·한쇼·이미지 PDF 올인원 변환기</p>
+        </div>
+      </div>
+      <nav class="topbar-links">
+        <a class="nav-pill highlight" id="topDownloadExeBtn" href="https://github.com/t98advisor1/tong-pdf/releases/latest/download/TongPDF-PC.exe">⬇ PC용 무설치(.exe) 다운로드</a>
+        <a class="nav-pill" href="https://t-ong.vercel.app/" target="_blank" rel="noopener noreferrer">디지털 교무수첩 ↗</a>
+        <a class="nav-pill" href="https://t98advisor1.github.io/tong-md/" target="_blank" rel="noopener noreferrer">AI용 MD 변환기 ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Windows PC 무설치 완벽 변환기 배너 -->
+    <section class="pc-banner" aria-label="Windows PC용 무설치 완벽 변환기 안내">
+      <div class="pc-banner-info">
+        <span class="pc-banner-badge">교무실 Windows PC 추천 · 설치 없음(포터블)</span>
+        <h2>한쇼(.show) · 복잡한 한글(.hwp/.hwpx) · PPT(.ppt/.pptx)를 원본 100% 그대로 PDF로!</h2>
+        <p>한컴오피스·파워포인트가 설치된 Windows PC에서 <strong>TongPDF-PC.exe</strong>를 더블클릭하고 파일·폴더만 끌어다 놓으면, 수식·표·결재란·슬라이드 모양 그대로 한 번에 PDF로 변환합니다.</p>
+      </div>
+      <div class="pc-banner-actions">
+        <a class="btn btn-primary" href="https://github.com/t98advisor1/tong-pdf/releases/latest/download/TongPDF-PC.exe">⬇ TongPDF-PC.exe 다운로드</a>
+        <button type="button" class="btn btn-outline" data-switch-tab="pcTool">사용 방법 보기</button>
+      </div>
+    </section>
+
+    <div class="security-strip">
+      <span>🔒 <strong>100% 내 기기(브라우저) 처리</strong> — 모든 파일은 외부 서버로 전송되지 않아 시험지·공문서도 안전합니다.</span>
+      <span>GitHub Pages 독립 배포 · 무료</span>
+    </div>
+
+    <!-- 탭 메뉴 -->
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab-btn active" data-tab="doc2pdf" role="tab" aria-selected="true">📄 문서 → PDF 일괄 변환</button>
+      <button type="button" class="tab-btn" data-tab="imgPdf" role="tab" aria-selected="false">🖼️ 이미지 ↔ PDF</button>
+      <button type="button" class="tab-btn" data-tab="mergeSplit" role="tab" aria-selected="false">✂️ PDF 합치기 · 나누기</button>
+      <button type="button" class="tab-btn" data-tab="pcTool" role="tab" aria-selected="false">💻 PC용 완벽 변환기(.exe)</button>
+    </div>
+
+    <!-- 탭 1: 문서 -> PDF 일괄 변환 -->
+    <section class="panel active" id="panel-doc2pdf">
+      <div class="panel-head">
+        <div>
+          <h3>문서 → PDF 일괄 변환 (브라우저 즉시 처리)</h3>
+          <p>여러 파일을 한꺼번에 끌어다 놓으면 브라우저에서 바로 PDF로 변환합니다. 한글 폰트가 깨지지 않도록 고해상도 페이지로 렌더링합니다.</p>
+        </div>
+      </div>
+
+      <div class="dropzone" id="docDropzone">
+        <input type="file" id="docFileInput" multiple accept=".hwpx,.hwp,.pptx,.ppt,.docx,.show,.txt,.md">
+        <div class="dropzone-icon">📂</div>
+        <div class="dropzone-title">여기에 문서 파일을 끌어다 놓거나 클릭하여 선택하세요</div>
+        <div class="dropzone-sub">여러 파일을 동시에 선택할 수 있습니다 (일괄 변환 및 ZIP 다운로드 지원)</div>
+        <div class="format-chips">
+          <span class="chip">.hwpx (한글)</span>
+          <span class="chip">.hwp (구형 한글)</span>
+          <span class="chip">.pptx (파워포인트)</span>
+          <span class="chip">.docx (워드)</span>
+          <span class="chip">.txt / .md</span>
+          <span class="chip warn">.show / .ppt (PC용 .exe 권장)</span>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <div class="control-group">
+          <label for="docOrientation">용지 방향</label>
+          <select id="docOrientation">
+            <option value="auto" selected>자동 (문서 A4 세로 / PPT 16:9 가로)</option>
+            <option value="portrait">A4 세로 고정</option>
+            <option value="landscape">A4 가로 고정</option>
+            <option value="slide169">16:9 슬라이드 가로</option>
+          </select>
+
+          <label for="docFontSize">글자 크기</label>
+          <select id="docFontSize">
+            <option value="small">작게 (한 페이지에 많이)</option>
+            <option value="medium" selected>보통 (기본 추천)</option>
+            <option value="large">크게 (가독성 우선)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <button type="button" class="btn btn-primary" id="convertAllDocsBtn" disabled>⚡ 전체 PDF 변환</button>
+          <button type="button" class="btn btn-success" id="downloadAllZipBtn" disabled>📦 전체 ZIP 다운로드</button>
+          <button type="button" class="btn btn-outline" id="clearDocsBtn">목록 비우기</button>
+        </div>
+      </div>
+
+      <div class="status-bar" id="docStatus"></div>
+      <div class="file-list" id="docFileList"></div>
+
+      <div class="notice-box info">
+        <strong>안내:</strong> 웹 브라우저 변환은 설치 없이 어디서나 빠르게 <strong>본문·표·이미지·슬라이드 내용을 깔끔한 PDF로 정리</strong>해 줍니다.
+        만약 <strong>한쇼(.show)</strong>, <strong>구형 파워포인트(.ppt)</strong>, 또는 <strong>복잡한 한글 수식·결재란·다단 공문서</strong>를 원본과 100% 똑같이 변환해야 한다면 상단의 <strong>Windows PC용 무설치 변환기(.exe)</strong>를 사용해 주세요.
+      </div>
+    </section>
+
+    <!-- 탭 2: 이미지 <-> PDF -->
+    <section class="panel" id="panel-imgPdf">
+      <div class="panel-head">
+        <div>
+          <h3>이미지(JPG/PNG/WebP) ↔ PDF 변환</h3>
+          <p>사진·학습지 스캔 이미지를 하나의 PDF로 묶거나, PDF의 각 페이지를 고화질 PNG 이미지로 저장합니다.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="sub-card">
+          <h4>🖼️ 이미지 여러 장 → PDF 1개로 합치기</h4>
+          <p>선택한 순서대로 PDF 페이지가 만들어집니다.</p>
+          <div class="dropzone" id="img2pdfDropzone" style="padding:22px 14px;">
+            <input type="file" id="img2pdfInput" multiple accept="image/png,image/jpeg,image/webp">
+            <div class="dropzone-title" style="font-size:0.92rem;">이미지 파일 선택 또는 드래그</div>
+            <div class="dropzone-sub" style="margin-bottom:0;">JPG, PNG, WebP 여러 장 가능</div>
+          </div>
+          <div class="controls-row" style="margin:12px 0;">
+            <div class="control-group">
+              <label for="imgPageMode">페이지 크기</label>
+              <select id="imgPageMode">
+                <option value="a4" selected>A4 맞춤 (여백 포함)</option>
+                <option value="fit">이미지 원본 크기에 맞춤</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="img2pdfRunBtn" disabled>PDF 생성 및 다운로드</button>
+          </div>
+          <div class="status-bar" id="img2pdfStatus"></div>
+          <div class="file-list" id="img2pdfList"></div>
+        </div>
+
+        <div class="sub-card">
+          <h4>📄 PDF → 페이지별 이미지(PNG) 저장</h4>
+          <p>PDF 페이지를 고화질 이미지로 추출하여 ZIP으로 내려받습니다.</p>
+          <div class="dropzone" id="pdf2imgDropzone" style="padding:22px 14px;">
+            <input type="file" id="pdf2imgInput" accept=".pdf,application/pdf">
+            <div class="dropzone-title" style="font-size:0.92rem;">PDF 파일 선택 또는 드래그</div>
+            <div class="dropzone-sub" style="margin-bottom:0;">1개 파일 선택</div>
+          </div>
+          <div class="controls-row" style="margin:12px 0;">
+            <div class="control-group">
+              <label for="pdf2imgScale">해상도</label>
+              <select id="pdf2imgScale">
+                <option value="1.5">보통 (빠름)</option>
+                <option value="2.0" selected>고화질 (추천)</option>
+                <option value="2.5">초고화질 (인쇄용)</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="pdf2imgRunBtn" disabled>이미지 ZIP 저장</button>
+          </div>
+          <div class="status-bar" id="pdf2imgStatus"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 탭 3: PDF 합치기 · 나누기 -->
+    <section class="panel" id="panel-mergeSplit">
+      <div class="panel-head">
+        <div>
+          <h3>PDF 합치기 · 페이지 나누기</h3>
+          <p>여러 PDF 파일을 하나로 합치거나, 원하는 페이지 범위만 골라 새 PDF로 저장합니다.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="sub-card">
+          <h4>🔗 PDF 여러 개 합치기</h4>
+          <p>순서를 위아래로 조정한 뒤 하나의 PDF로 병합합니다.</p>
+          <div class="dropzone" id="mergeDropzone" style="padding:22px 14px;">
+            <input type="file" id="mergeInput" multiple accept=".pdf,application/pdf">
+            <div class="dropzone-title" style="font-size:0.92rem;">합칠 PDF 파일 선택 또는 드래그</div>
+            <div class="dropzone-sub" style="margin-bottom:0;">2개 이상 선택</div>
+          </div>
+          <div class="controls-row" style="margin:12px 0;">
+            <button type="button" class="btn btn-primary btn-sm" id="mergeRunBtn" disabled>PDF 합쳐서 다운로드</button>
+            <button type="button" class="btn btn-outline btn-sm" id="mergeClearBtn">비우기</button>
+          </div>
+          <div class="status-bar" id="mergeStatus"></div>
+          <div class="file-list" id="mergeList"></div>
+        </div>
+
+        <div class="sub-card">
+          <h4>✂️ PDF 페이지 나누기 / 추출</h4>
+          <p>원하는 페이지 범위만 추출하거나, 모든 페이지를 1장씩 ZIP으로 나눕니다.</p>
+          <div class="dropzone" id="splitDropzone" style="padding:22px 14px;">
+            <input type="file" id="splitInput" accept=".pdf,application/pdf">
+            <div class="dropzone-title" style="font-size:0.92rem;">나눌 PDF 파일 선택 또는 드래그</div>
+            <div class="dropzone-sub" style="margin-bottom:0;" id="splitFileInfo">파일을 선택하면 전체 페이지 수가 표시됩니다</div>
+          </div>
+          <div class="controls-row" style="margin:12px 0;">
+            <div class="control-group" style="width:100%;">
+              <label for="splitRangeInput">페이지 범위</label>
+              <input type="text" id="splitRangeInput" placeholder="예: 1-3, 5, 8-10 (비우면 전체 1장씩 분리)" style="flex:1;min-width:180px;">
+            </div>
+            <div class="control-group">
+              <button type="button" class="btn btn-primary btn-sm" id="splitRangeBtn" disabled>지정 범위 PDF 저장</button>
+              <button type="button" class="btn btn-success btn-sm" id="splitEachBtn" disabled>1페이지씩 ZIP 분리</button>
+            </div>
+          </div>
+          <div class="status-bar" id="splitStatus"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 탭 4: Windows PC용 무설치 완벽 변환기 안내 -->
+    <section class="panel" id="panel-pcTool">
+      <div class="panel-head">
+        <div>
+          <h3>💻 교무실 Windows PC용 무설치 완벽 변환기 (TongPDF-PC.exe)</h3>
+          <p>PC에 설치된 한컴오피스(한글·한쇼)와 파워포인트를 자동으로 구동하여, 원본 레이아웃 100% 그대로 일괄 PDF 변환합니다.</p>
+        </div>
+        <a class="btn btn-primary" href="https://github.com/t98advisor1/tong-pdf/releases/latest/download/TongPDF-PC.exe">⬇ TongPDF-PC.exe 다운로드</a>
+      </div>
+
+      <div class="guide-grid">
+        <div class="guide-step">
+          <span class="guide-num">1</span>
+          <h4>설치 없이 파일 1개 다운로드</h4>
+          <p><code>TongPDF-PC.exe</code> 파일을 바탕화면이나 USB에 저장하세요. 관리자 권한이나 설치 마법사가 필요 없습니다.</p>
+        </div>
+        <div class="guide-step">
+          <span class="guide-num">2</span>
+          <h4>더블클릭 실행 (첫 실행 안내)</h4>
+          <p>처음 실행 시 Windows "PC 보호" 파란 창이 뜨면 <strong>[추가 정보] → [실행]</strong>을 누르시면 됩니다. (개인 제작 무설치 도구 정상 안내)</p>
+        </div>
+        <div class="guide-step">
+          <span class="guide-num">3</span>
+          <h4>파일 또는 폴더를 통째로 드래그</h4>
+          <p><code>.hwp</code>, <code>.hwpx</code>, <code>.show</code>, <code>.ppt</code>, <code>.pptx</code>, <code>.docx</code> 파일을 창에 끌어다 놓고 <strong>[일괄 PDF 변환]</strong>을 누르면 끝!</p>
+        </div>
+      </div>
+
+      <h4 style="margin:18px 0 6px;">지원 형식 비교 (웹 vs PC용 무설치 .exe)</h4>
+      <table class="compat-table">
+        <thead>
+          <tr>
+            <th>파일 형식</th>
+            <th>웹 브라우저 변환 (현재 사이트)</th>
+            <th>PC용 무설치 변환기 (.exe)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>한글 (.hwpx / .hwp)</strong></td>
+            <td>본문·표·이미지 빠른 PDF 생성 (설치 불필요)</td>
+            <td><strong>원본 100% 동일</strong> (수식·결재란·다단 완벽 유지)</td>
+          </tr>
+          <tr>
+            <td><strong>파워포인트 (.pptx / .ppt)</strong></td>
+            <td>.pptx 슬라이드 텍스트·이미지 16:9 PDF</td>
+            <td><strong>원본 100% 동일</strong> (.ppt / .pptx 모두 지원)</td>
+          </tr>
+          <tr>
+            <td><strong>한쇼 (.show)</strong></td>
+            <td>신형 .show 텍스트 요약만 제한 지원</td>
+            <td><strong>원본 100% 동일</strong> (한컴 한쇼 엔진 자동 구동)</td>
+          </tr>
+          <tr>
+            <td><strong>워드 (.docx / .doc)</strong></td>
+            <td>.docx 본문·표 PDF 생성</td>
+            <td><strong>원본 100% 동일</strong> (MS Word 또는 한글 자동 구동)</td>
+          </tr>
+          <tr>
+            <td><strong>이미지 · PDF 합치기/나누기</strong></td>
+            <td><strong>완벽 지원</strong> (태블릿·모바일·PC 어디서나)</td>
+            <td>이미지 → PDF 일괄 변환 지원</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice-box" style="margin-top:16px;">
+        <strong>한글 보안 팝업 안내:</strong> 처음 변환할 때 한글에서 <em>"외부 프로그램이 파일에 접근하려고 합니다"</em> 알림이 뜰 수 있습니다. 프로그램 내 <strong>[한글 보안 모듈 자동 허용 설정]</strong> 버튼을 한 번만 눌러두면 이후부터는 팝업 없이 조용히 일괄 변환됩니다.
+      </div>
+    </section>
+
+    <footer class="footer">
+      통PDF (TongPDF) · 디지털 교무수첩 (<a href="https://t-ong.vercel.app/" target="_blank" rel="noopener noreferrer">t-ong.vercel.app</a>) 연동 독립 도구 · 모든 처리는 사용자 기기 내부에서 안전하게 실행됩니다.
+    </footer>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

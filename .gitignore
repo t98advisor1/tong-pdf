@@ -1,0 +1,6 @@
+pc-tool/build/
+pc-tool/dist/
+pc-tool/*.spec
+pc-tool/__pycache__/
+*.pyc
+.DS_Store
