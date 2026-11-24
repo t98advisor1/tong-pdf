@@ -31,6 +31,12 @@
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
   });
 
+  // Support deep-linking tab via ?tab=doc2pdf|imgPdf|mergeSplit|pcTool
+  const initialTab = new URLSearchParams(window.location.search).get('tab');
+  if (initialTab && ['doc2pdf', 'imgPdf', 'mergeSplit', 'pcTool'].includes(initialTab)) {
+    switchTab(initialTab);
+  }
+
   $$('[data-switch-tab]').forEach((btn) => {
     btn.addEventListener('click', () => {
       switchTab(btn.dataset.switchTab);
@@ -1370,5 +1376,61 @@
       splitStatus.textContent = '오류: ' + err.message;
     }
     splitEachBtn.disabled = false;
+  });
+
+  // -------------------- Keyboard Shortcuts --------------------
+  const tabOrder = ['doc2pdf', 'imgPdf', 'mergeSplit', 'pcTool'];
+  let currentTabId = 'doc2pdf';
+
+  const origSwitchTab = switchTab;
+  switchTab = function (tabId) {
+    currentTabId = tabId;
+    origSwitchTab(tabId);
+  };
+
+  document.addEventListener('keydown', (e) => {
+    const tag = (e.target && e.target.tagName) || '';
+    const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+
+    // F1 -> Open Guide
+    if (e.key === 'F1') {
+      e.preventDefault();
+      window.open('./guide.html', '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    // Alt + 1..4 -> Switch tabs
+    if (e.altKey && !e.ctrlKey && !e.metaKey && ['1', '2', '3', '4'].includes(e.key)) {
+      e.preventDefault();
+      const idx = Number(e.key) - 1;
+      if (tabOrder[idx]) switchTab(tabOrder[idx]);
+      return;
+    }
+
+    // Ctrl/Cmd + O -> Open file picker for active tab
+    if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 'o') {
+      e.preventDefault();
+      if (currentTabId === 'doc2pdf') $('#docFileInput').click();
+      else if (currentTabId === 'imgPdf') $('#img2pdfInput').click();
+      else if (currentTabId === 'mergeSplit') $('#mergeInput').click();
+      return;
+    }
+
+    // Ctrl/Cmd + Enter -> Trigger primary convert/action on active tab
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !isTyping) {
+      e.preventDefault();
+      if (currentTabId === 'doc2pdf' && !convertAllDocsBtn.disabled) convertAllDocsBtn.click();
+      else if (currentTabId === 'imgPdf' && !img2pdfRunBtn.disabled) img2pdfRunBtn.click();
+      else if (currentTabId === 'mergeSplit' && !mergeRunBtn.disabled) mergeRunBtn.click();
+      return;
+    }
+
+    // Ctrl/Cmd + Shift + D -> Download all converted PDFs as ZIP
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'd') {
+      if (currentTabId === 'doc2pdf' && !downloadAllZipBtn.disabled) {
+        e.preventDefault();
+        downloadAllZipBtn.click();
+      }
+    }
   });
 })();

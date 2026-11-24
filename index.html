@@ -6,6 +6,7 @@
   <title>통PDF (TongPDF) · 한글·PPT·한쇼·이미지 PDF 올인원 변환기</title>
   <meta name="description" content="설치 없이 브라우저에서 한글(.hwpx/.hwp), PPT(.pptx), 워드(.docx), 이미지를 PDF로 변환하고 PDF 합치기·나누기를 처리합니다. 교무실 Windows PC용 무설치 완벽 변환기(.exe)도 함께 제공합니다.">
   <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css">
   <link rel="stylesheet" href="./style.css">
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -23,6 +24,7 @@
       </div>
       <nav class="topbar-links">
         <a class="nav-pill highlight" id="topDownloadExeBtn" href="https://github.com/t98advisor1/tong-pdf/releases/latest/download/TongPDF-PC.exe">⬇ PC용 무설치(.exe) 다운로드</a>
+        <a class="nav-pill" href="./guide.html">📖 사용설명서 (GIF·단축키)</a>
         <a class="nav-pill" href="https://t-ong.vercel.app/" target="_blank" rel="noopener noreferrer">디지털 교무수첩 ↗</a>
         <a class="nav-pill" href="https://t98advisor1.github.io/tong-md/" target="_blank" rel="noopener noreferrer">AI용 MD 변환기 ↗</a>
       </nav>
@@ -289,6 +291,15 @@
         <strong>한글 보안 팝업 안내:</strong> 처음 변환할 때 한글에서 <em>"외부 프로그램이 파일에 접근하려고 합니다"</em> 알림이 뜰 수 있습니다. 프로그램 내 <strong>[한글 보안 모듈 자동 허용 설정]</strong> 버튼을 한 번만 눌러두면 이후부터는 팝업 없이 조용히 일괄 변환됩니다.
       </div>
     </section>
+
+    <div class="shortcut-strip" aria-label="키보드 단축키 안내">
+      <strong>⌨️ 단축키:</strong>
+      <span><kbd>Alt</kbd>+<kbd>1~4</kbd> 탭 전환</span>
+      <span><kbd>Ctrl</kbd>+<kbd>O</kbd> 파일 추가</span>
+      <span><kbd>Ctrl</kbd>+<kbd>Enter</kbd> 일괄 PDF 변환</span>
+      <span><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd> 전체 ZIP 저장</span>
+      <span><kbd>F1</kbd> <a href="./guide.html" style="text-decoration:underline;font-weight:700;color:#1d4ed8;">사용설명서 열기</a></span>
+    </div>
 
     <footer class="footer">
       통PDF (TongPDF) · 디지털 교무수첩 (<a href="https://t-ong.vercel.app/" target="_blank" rel="noopener noreferrer">t-ong.vercel.app</a>) 연동 독립 도구 · 모든 처리는 사용자 기기 내부에서 안전하게 실행됩니다.

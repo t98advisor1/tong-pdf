@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>통PDF (TongPDF) 사용설명서 · 스크린샷·GIF·단축키·동영상 대본</title>
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css">
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    .guide-container {
+      max-width: 1120px;
+      margin: 22px auto 60px;
+      padding: 0 16px;
+    }
+
+    .toc-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+    }
+
+    .toc-link {
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: #1e293b;
+      transition: all 0.15s;
+    }
+
+    .toc-link:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .guide-section {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1e40af;
+      margin-bottom: 8px;
+    }
+
+    .section-tag.red { background: #fee2e2; color: #b91c1c; }
+    .section-tag.green { background: #dcfce7; color: #166534; }
+    .section-tag.amber { background: #fef3c7; color: #92400e; }
+
+    .guide-section h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .guide-section .lead {
+      margin: 0 0 18px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* 1단 풀스크린 이미지 카드 */
+    .full-shot-block {
+      margin: 22px 0 32px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    .full-shot-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 13px 18px;
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    .full-shot-head h3 {
+      margin: 0;
+      font-size: 1.04rem;
+      font-weight: 800;
+    }
+
+    .full-shot-head a {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fde047;
+      text-decoration: none;
+    }
+
+    .full-shot-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .callout-list {
+      list-style: none;
+      margin: 0;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .callout-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+
+    .num-dot {
+      flex: 0 0 auto;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #ffffff;
+      background: #dc2626;
+      margin-top: 1px;
+    }
+
+    .num-dot.blue { background: #1d4ed8; }
+    .num-dot.green { background: #059669; }
+    .num-dot.sky { background: #0284c7; }
+
+    /* 단축키 표 */
+    .shortcut-table, .script-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin-top: 10px;
+    }
+
+    .shortcut-table th, .shortcut-table td,
+    .script-table th, .script-table td {
+      border: 1px solid var(--border);
+      padding: 11px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .shortcut-table th, .script-table th {
+      background: #f1f5f9;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .script-scene {
+      font-weight: 800;
+      color: #1d4ed8;
+      white-space: nowrap;
+    }
+
+    .script-narration {
+      background: #f8fafc;
+      border-left: 4px solid #1d4ed8;
+      padding: 8px 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .script-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    @media print {
+      .topbar-links, .toc-bar, .no-print { display: none !important; }
+      .guide-section { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="./icon.svg" alt="통PDF 아이콘">
+        <div>
+          <h1>통PDF (TongPDF) 공식 사용설명서</h1>
+          <p>1단 풀스크린 주석 스크린샷 · 10초 요약 GIF · 단축키 · 동영상 안내 대본</p>
+        </div>
+      </div>
+      <nav class="topbar-links">
+        <a class="nav-pill highlight" href="./index.html">⬅ 통PDF 변환기 바로가기</a>
+        <a class="nav-pill" href="https://github.com/t98advisor1/tong-pdf/releases/latest/download/TongPDF-PC.exe">⬇ PC용 .exe 다운로드</a>
+        <button type="button" class="nav-pill" onclick="window.print()" style="cursor:pointer;">🖨️ 설명서 인쇄 / PDF 저장</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="guide-container">
+    <nav class="toc-bar" aria-label="설명서 목차">
+      <a class="toc-link" href="#sec-gif">🎬 10초 빠른 GIF 설명</a>
+      <a class="toc-link" href="#sec-shots">🖼️ 1단 풀스크린 스크린샷 안내</a>
+      <a class="toc-link" href="#sec-shortcuts">⌨️ 단축키 모음</a>
+      <a class="toc-link" href="#sec-video-script">🎥 동영상 안내 스크립트</a>
+    </nav>
+
+    <!-- 1. 빠르게 볼 수 있는 GIF 설명 -->
+    <section class="guide-section" id="sec-gif">
+      <span class="section-tag amber">빠르게 보는 10초 요약 GIF</span>
+      <h2>1. 한눈에 보는 통PDF 사용 흐름 (GIF 애니메이션)</h2>
+      <p class="lead">글을 길게 읽지 않아도 아래 GIF 2장만 보시면 <strong>웹 브라우저 즉시 변환</strong>과 <strong>교무실 PC용 무설치(.exe) 완벽 변환</strong> 흐름을 10초 만에 파악할 수 있습니다.</p>
+
+      <div class="full-shot-block">
+        <div class="full-shot-head">
+          <h3>⚡ GIF 1. 웹 브라우저에서 설치 없이 바로 PDF 변환·합치기·나누기</h3>
+          <a href="./assets/guide/quick_demo_web.gif" target="_blank" rel="noopener noreferrer">원본 크기로 보기 ↗</a>
+        </div>
+        <img class="full-shot-img" src="./assets/guide/quick_demo_web.gif" alt="통PDF 웹 버전 4단계 빠른 사용법 GIF">
+        <ul class="callout-list">
+          <li><span class="num-dot">✓</span><span><strong>핵심 포인트:</strong> 태블릿·교무실 어디서나 설치 없이 접속하여 <code>.hwpx</code>·<code>.hwp</code>·<code>.pptx</code>·<code>.docx</code>·이미지를 PDF로 만들고, PDF 합치기·나누기까지 100% 내 브라우저 안에서 안전하게 처리합니다.</span></li>
+        </ul>
+      </div>
+
+      <div class="full-shot-block">
+        <div class="full-shot-head">
+          <h3>💻 GIF 2. 교무실 Windows PC용 무설치(.exe) — 한쇼·한글·PPT 원본 100% 일괄 변환</h3>
+          <a href="./assets/guide/quick_demo_pc.gif" target="_blank" rel="noopener noreferrer">원본 크기로 보기 ↗</a>
+        </div>
+        <img class="full-shot-img" src="./assets/guide/quick_demo_pc.gif" alt="통PDF Windows PC용 무설치 실행파일 빠른 사용법 GIF">
+        <ul class="callout-list">
+          <li><span class="num-dot blue">✓</span><span><strong>핵심 포인트:</strong> 한쇼(<code>.show</code>), 구형 파워포인트(<code>.ppt</code>), 복잡한 수식·결재란이 있는 한글 파일은 <code>TongPDF-PC.exe</code>에 폴더째 드래그하면 PC의 한컴오피스·파워포인트가 자동 구동되어 <strong>원본과 100% 똑같은 PDF</strong>를 만들어 줍니다.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. 1단 풀스크린 스크린샷 사용설명서 -->
+    <section class="guide-section" id="sec-shots">
+      <span class="section-tag red">1단 풀스크린 시각 가이드</span>
+      <h2>2. 스크린샷으로 따라 하는 단계별 사용설명서</h2>
+      <p class="lead">모든 화면은 <strong>1단 풀스크린</strong>으로 배치했으며, <strong>강조 박스 · 화살표 · 번호</strong>를 따라 확인하시면 누구나 1분 만에 사용하실 수 있습니다.</p>
+
+      <!-- Step 1 -->
+      <article class="full-shot-block">
+        <div class="full-shot-head">
+          <h3>화면 1. 문서 → PDF 일괄 변환 (기본 화면 · Alt+1)</h3>
+          <a href="./assets/guide/step1_doc2pdf.png" target="_blank" rel="noopener noreferrer">원본 크게 보기 ↗</a>
+        </div>
+        <img class="full-shot-img" src="./assets/guide/step1_doc2pdf.png" alt="통PDF 문서에서 PDF 변환 화면 주석 스크린샷">
+        <ul class="callout-list">
+          <li><span class="num-dot blue">1</span><span><strong>PC용 무설치 완벽 변환기 배너:</strong> 한쇼(<code>.show</code>)나 복잡한 공문서 한글 파일은 이 파란 배너의 <strong>[TongPDF-PC.exe 다운로드]</strong> 버튼을 눌러 PC에서 바로 변환하세요.</span></li>
+          <li><span class="num-dot">2</span><span><strong>파일 드래그 영역:</strong> <code>.hwpx</code>, <code>.hwp</code>, <code>.pptx</code>, <code>.docx</code>, <code>.txt</code>, <code>.md</code> 파일을 여러 개 동시에 끌어다 놓거나 클릭해서 선택합니다.</span></li>
+          <li><span class="num-dot green">3</span><span><strong>옵션 및 일괄 변환 바:</strong> 용지 방향(자동: 문서는 A4 세로, PPT는 16:9 가로)과 글자 크기를 고른 뒤 <strong>[⚡ 전체 PDF 변환]</strong> → <strong>[📦 전체 ZIP 다운로드]</strong>를 누르면 끝납니다.</span></li>
+        </ul>
+      </article>
+
+      <!-- Step 2 -->
+      <article class="full-shot-block">
+        <div class="full-shot-head">
+          <h3>화면 2. 이미지(JPG/PNG/WebP) ↔ PDF 양방향 변환 (Alt+2)</h3>
+          <a href="./assets/guide/step2_img_pdf.png" target="_blank" rel="noopener noreferrer">원본 크게 보기 ↗</a>
+        </div>
+        <img class="full-shot-img" src="./assets/guide/step2_img_pdf.png" alt="통PDF 이미지와 PDF 양방향 변환 화면 주석 스크린샷">
+        <ul class="callout-list">
+          <li><span class="num-dot">1</span><span><strong>왼쪽 카드 (이미지 여러 장 → PDF 1개):</strong> 학습지 사진이나 스캔 이미지를 여러 장 올린 뒤 <code>▲▼</code> 버튼으로 순서를 맞추고 A4 맞춤 또는 원본 크기로 PDF를 생성합니다.</span></li>
+          <li><span class="num-dot sky">2</span><span><strong>오른쪽 카드 (PDF → 고화질 PNG):</strong> PDF 파일 1개를 올리고 해상도(보통/고화질/초고화질)를 선택하면 모든 페이지가 고화질 PNG 이미지 ZIP으로 저장됩니다.</span></li>
+        </ul>
+      </article>
+
+      <!-- Step 3 -->
+      <article class="full-shot-block">
+        <div class="full-shot-head">
+          <h3>화면 3. PDF 합치기 · 페이지 나누기 / 추출 (Alt+3)</h3>
+          <a href="./assets/guide/step3_merge_split.png" target="_blank" rel="noopener noreferrer">원본 크게 보기 ↗</a>
+        </div>
+        <img class="full-shot-img" src="./assets/guide/step3_merge_split.png" alt="통PDF PDF 합치기 나누기 화면 주석 스크린샷">
+        <ul class="callout-list">
+          <li><span class="num-dot">1</span><span><strong>왼쪽 카드 (PDF 합치기):</strong> 여러 공문서·시험지 PDF를 2개 이상 올리고 <code>▲▼</code> 버튼으로 순서를 정한 뒤 <strong>[PDF 합쳐서 다운로드]</strong>를 클릭합니다.</span></li>
+          <li><span class="num-dot green">2</span><span><strong>오른쪽 카드 (PDF 나누기):</strong> <code>1-3, 5, 8-10</code>처럼 원하는 페이지 범위만 뽑아 새 PDF로 저장하거나, <strong>[1페이지씩 ZIP 분리]</strong>로 낱장 분리할 수 있습니다.</span></li>
+        </ul>
+      </article>
+
+      <!-- Step 4 -->
+      <article class="full-shot-block">
+        <div class="full-shot-head">
+          <h3>화면 4. 교무실 Windows PC용 무설치 완벽 변환기 안내 (Alt+4)</h3>
+          <a href="./assets/guide/step4_pc_exe.png" target="_blank" rel="noopener noreferrer">원본 크게 보기 ↗</a>
+        </div>
+        <img class="full-shot-img" src="./assets/guide/step4_pc_exe.png" alt="통PDF PC용 무설치 실행파일 안내 화면 주석 스크린샷">
+        <ul class="callout-list">
+          <li><span class="num-dot">1</span><span><strong>무설치 실행파일 다운로드:</strong> <code>TongPDF-PC.exe</code> 단일 파일을 내려받아 바탕화면이나 USB에 보관합니다.</span></li>
+          <li><span class="num-dot blue">2</span><span><strong>3단계 사용법:</strong> 다운로드 → 더블클릭(첫 실행 시 Windows PC 보호 창에서 <em>추가 정보 → 실행</em>) → 파일 또는 폴더를 창에 통째로 드래그합니다.</span></li>
+          <li><span class="num-dot green">3</span><span><strong>웹 vs PC용 비교표:</strong> 어떤 파일은 웹에서 바로 하고, 어떤 파일(한쇼·구형 PPT·복잡한 한글)은 PC용 <code>.exe</code>를 쓰면 좋은지 한눈에 비교할 수 있습니다.</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- 3. 단축키 모음 -->
+    <section class="guide-section" id="sec-shortcuts">
+      <span class="section-tag green">키보드 단축키</span>
+      <h2>3. 작업 속도를 2배 높여 주는 단축키 모음</h2>
+      <p class="lead">통PDF 웹 화면에서 마우스 이동 없이 키보드만으로 탭 이동, 파일 선택, 일괄 변환, ZIP 저장까지 바로 실행할 수 있습니다.</p>
+
+      <table class="shortcut-table">
+        <thead>
+          <tr>
+            <th style="width:220px;">단축키</th>
+            <th style="width:240px;">기능</th>
+            <th>상세 설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><kbd>Alt</kbd> + <kbd>1</kbd></td>
+            <td><strong>문서 → PDF 탭 이동</strong></td>
+            <td>한글(.hwpx/.hwp)·PPT(.pptx)·워드(.docx) 일괄 변환 화면으로 즉시 이동합니다.</td>
+          </tr>
+          <tr>
+            <td><kbd>Alt</kbd> + <kbd>2</kbd></td>
+            <td><strong>이미지 ↔ PDF 탭 이동</strong></td>
+            <td>이미지 합치기 및 PDF → PNG 추출 화면으로 이동합니다.</td>
+          </tr>
+          <tr>
+            <td><kbd>Alt</kbd> + <kbd>3</kbd></td>
+            <td><strong>PDF 합치기·나누기 탭</strong></td>
+            <td>PDF 병합 및 페이지 범위 추출 화면으로 이동합니다.</td>
+          </tr>
+          <tr>
+            <td><kbd>Alt</kbd> + <kbd>4</kbd></td>
+            <td><strong>PC용 무설치(.exe) 안내</strong></td>
+            <td>교무실 Windows PC용 100% 원본 변환기 다운로드 및 안내 탭으로 이동합니다.</td>
+          </tr>
+          <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>O</kbd></td>
+            <td><strong>파일 선택 창 열기</strong></td>
+            <td>현재 보고 있는 탭에 맞는 파일 선택 창을 바로 띄웁니다. (Mac은 <kbd>Cmd</kbd>+<kbd>O</kbd>)</td>
+          </tr>
+          <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>Enter</kbd></td>
+            <td><strong>일괄 PDF 변환 실행</strong></td>
+            <td>목록에 올려둔 파일들의 PDF 변환(또는 이미지·PDF 병합)을 즉시 시작합니다.</td>
+          </tr>
+          <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></td>
+            <td><strong>전체 ZIP 일괄 다운로드</strong></td>
+            <td>변환이 완료된 모든 PDF 파일을 하나의 ZIP 파일로 한 번에 내려받습니다.</td>
+          </tr>
+          <tr>
+            <td><kbd>F1</kbd></td>
+            <td><strong>사용설명서 새 창 열기</strong></td>
+            <td>현재 보고 계신 스크린샷·GIF·단축키 공식 사용설명서를 바로 엽니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 4. 동영상 안내 스크립트 -->
+    <section class="guide-section" id="sec-video-script">
+      <div class="script-toolbar">
+        <div>
+          <span class="section-tag">1분 30초 연수·안내 영상용</span>
+          <h2 style="margin-bottom:4px;">4. 동영상 제작용 안내 스크립트 (타임코드 · 화면 · 내레이션)</h2>
+        </div>
+        <button type="button" class="btn btn-primary no-print" id="copyScriptBtn">📋 전체 대본 복사하기</button>
+      </div>
+      <p class="lead">교내 전달 연수나 유튜브 쇼츠/안내 영상을 촬영하실 때 그대로 읽거나 TTS(AI 음성)에 붙여 넣어 바로 사용하실 수 있는 대본입니다.</p>
+
+      <table class="script-table" id="videoScriptTable">
+        <thead>
+          <tr>
+            <th style="width:120px;">장면 / 시간</th>
+            <th style="width:260px;">화면 구성 (촬영 포인트)</th>
+            <th>내레이션 대본 (읽기용)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="script-scene">S1. 도입<br>00:00 ~ 00:15</td>
+            <td>디지털 교무수첩(<code>t-ong.vercel.app</code>) 메뉴에서 <strong>[통PDF 변환기]</strong> 클릭 → 통PDF 메인 화면 등장</td>
+            <td><div class="script-narration">"선생님, 한글·한쇼·파워포인트 파일 여러 개를 PDF로 바꿀 때마다 하나씩 열어서 저장하시느라 번거로우셨죠? 이제 디지털 교무수첩과 연결된 <strong>통PDF</strong>로 클릭 한 번에 끝내실 수 있습니다."</div></td>
+          </tr>
+          <tr>
+            <td class="script-scene">S2. 웹 즉시 변환<br>00:15 ~ 00:38</td>
+            <td>문서 드래그 영역에 <code>.hwpx</code>·<code>.pptx</code> 파일 3개 드래그 → <kbd>Ctrl+Enter</kbd> 누름 → <strong>[전체 ZIP 다운로드]</strong> 클릭</td>
+            <td><div class="script-narration">"급하게 태블릿이나 다른 PC에서 변환할 때는 설치가 필요 없습니다. 웹 화면에 한글이나 PPT 파일을 여러 개 끌어다 놓고 <strong>전체 PDF 변환</strong>만 누르세요. 외부 서버로 파일이 나가지 않고 내 브라우저 안에서만 처리돼서 시험지나 공문서도 안심하고 쓸 수 있습니다."</div></td>
+          </tr>
+          <tr>
+            <td class="script-scene">S3. 이미지·합치기<br>00:38 ~ 00:55</td>
+            <td><kbd>Alt+2</kbd> 이미지→PDF 탭, <kbd>Alt+3</kbd> PDF 합치기·나누기 탭 빠르게 전환하며 시연</td>
+            <td><div class="script-narration">"상단 탭이나 단축키 <strong>Alt+2, Alt+3</strong>을 누르면, 학습지 사진 여러 장을 A4 PDF 하나로 묶거나, PDF 여러 개를 순서대로 합치고 원하는 쪽만 쏙쏙 뽑아내는 작업도 바로 해결됩니다."</div></td>
+          </tr>
+          <tr>
+            <td class="script-scene">S4. PC용 무설치 .exe<br>00:55 ~ 01:20</td>
+            <td>상단 노란색 <strong>[PC용 무설치(.exe) 다운로드]</strong> 클릭 → 바탕화면에서 <code>TongPDF-PC.exe</code> 실행 → <code>.show</code>·<code>.hwp</code>·<code>.pptx</code> 폴더째 드래그 → PDF 자동 생성</td>
+            <td><div class="script-narration">"그런데 한쇼 파일이나 수식·결재란이 복잡한 한글 공문서는 원본 모양 100% 그대로 나와야 하잖아요? 그럴 땐 상단의 <strong>PC용 무설치 변환기</strong>를 받아 바탕화면에서 더블클릭하세요. 파일이나 폴더를 끌어다 놓기만 하면 내 PC의 한컴오피스와 파워포인트가 뒤에서 자동으로 작동해 <strong>원본 100% 그대로</strong> 일괄 PDF로 저장해 줍니다."</div></td>
+          </tr>
+          <tr>
+            <td class="script-scene">S5. 마무리<br>01:20 ~ 01:30</td>
+            <td>변환 완료된 PDF 폴더 화면 + <code>t-ong.vercel.app</code> 및 <code>tong-pdf</code> 주소 자막</td>
+            <td><div class="script-narration">"복잡한 설치 없이 웹에서도, 교무실 PC에서도 완벽하게! 지금 디지털 교무수첩 메뉴에서 <strong>통PDF</strong>를 바로 사용해 보세요."</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="footer">
+      통PDF (TongPDF) 공식 사용설명서 · <a href="./index.html">변환기로 돌아가기</a> · <a href="https://t-ong.vercel.app/" target="_blank" rel="noopener noreferrer">디지털 교무수첩 (t-ong.vercel.app)</a>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('copyScriptBtn').addEventListener('click', async function () {
+      const rows = Array.from(document.querySelectorAll('#videoScriptTable tbody tr'));
+      const text = rows.map((tr) => {
+        const tds = tr.querySelectorAll('td');
+        const scene = tds[0].innerText.replace(/\n/g, ' ');
+        const visual = tds[1].innerText.trim();
+        const nar = tds[2].innerText.trim();
+        return `[${scene}]\n- 화면: ${visual}\n- 대본: ${nar}`;
+      }).join('\n\n');
+      try {
+        await navigator.clipboard.writeText(text);
+        this.textContent = '✅ 대본이 클립보드에 복사되었습니다!';
+        setTimeout(() => { this.textContent = '📋 전체 대본 복사하기'; }, 2500);
+      } catch (_) {
+        alert('클립보드 복사에 실패했습니다. 대본 텍스트를 직접 선택해 복사해 주세요.');
+      }
+    });
+  </script>
+</body>
+</html>
